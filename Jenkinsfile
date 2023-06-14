@@ -16,8 +16,8 @@ pipeline {
         stage('Build') {
             steps {
                 // Perform the build steps
-                sh "cd gitops-pipeline && docker build -t test:v1 ."
-                sh "docker tag test-app:v2 kunalk07/gitops-flask:v1"
+                sh "cd gitops-pipeline && sudo docker build -t test:v1 ."
+                sh "sudo docker tag test-app:v2 kunalk07/gitops-flask:v1"
             }
         }
         stage('Test') {
