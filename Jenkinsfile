@@ -1,31 +1,22 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.1' // Docker image to be used as the execution environment
-            args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
-        }
-    }
+    agent any
+
     stages {
-        // Clone the git repo
-        stage('GitClone') {
-            steps {
-                sh 'git clone https://github.com/KunalNK/gitops-pipeline.git'
-            }
-        }
-        // Define your pipeline stages here
         stage('Build') {
             steps {
-                // Perform the build steps
-                sh 'cd gitops-pipeline && sudo docker build -t test:v1 .'
-                sh 'docker tag test-app:v2 kunalk07/gitops-flask:v1'
+                script {
+                    // Build the Docker image
+                    def dockerImage = docker.build('my-docker-image')
+
+                    // Optionally, you can tag the image with a version or a specific tag
+                    dockerImage.tag('my-docker-image:latest')
+
+                    // Push the Docker image to a registry
+                    docker.withRegistry('https://registry.example.com', 'dockerhub-cred') {
+                        dockerImage.push()
+                    }
+                }
             }
         }
-        stage('Test') {
-            steps {
-                // Perform the test steps
-                echo 'Image tagged'
-            }
-        }
-        // Add more stages as needed
     }
 }
