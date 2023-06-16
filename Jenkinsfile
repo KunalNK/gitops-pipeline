@@ -14,7 +14,8 @@ pipeline{
        stage('Building image') {
       steps{
         script {
-          sh "docker build -t kunalk07/gitops-flask:$BUILD_NUMBER .
+            sh "pwd"
+          sh "docker build -t kunalk07/gitops-flask:$BUILD_NUMBER ."
         }
       }
     }
