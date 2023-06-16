@@ -14,7 +14,7 @@ pipeline{
        stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          sh "docker build -t kunalk07/gitops-flask:$BUILD_NUMBER .
         }
       }
     }
