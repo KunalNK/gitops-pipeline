@@ -3,17 +3,18 @@ pipeline{
     options{
         buildDiscarder(logRotator(numToKeepStr: '5', daysToKeepStr: '5'))
         timestamps()
+    }
     environment{
+        
         registry = "kunalk07/gitops-flask"
-        registryCredential = 'dockerhub-cred'        
+        registryCredential = 'dockerhub'        
     }
     
     stages{
        stage('Building image') {
       steps{
         script {
-            sh "pwd"
-          sh "docker build -t kunalk07/gitops-flask:$BUILD_NUMBER ."
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
     }
@@ -26,7 +27,5 @@ pipeline{
         }
       }
     }
-}
-}
 }
     
