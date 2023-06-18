@@ -1,9 +1,10 @@
 pipeline{
-    agent any
-    options{
-        buildDiscarder(logRotator(numToKeepStr: '5', daysToKeepStr: '5'))
-        timestamps()
+  agent {
+    docker {
+      image 'abhishekf5/maven-abhishek-docker-agent:v1'
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
+  }
     environment{
         
         registry = "kunalk07/gitops-flask"
